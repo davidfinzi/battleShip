@@ -1,0 +1,14 @@
+<div class="game">
+    <h1>Batalla Naval</h1>
+    <p *ngIf="!gameStarted && !gameOver">Haz clic en una celda para empezar</p>
+    <p *ngIf="gameOver">¡Juego terminado!</p>
+    <div class="board">
+      <div *ngFor="let row of board; let i = index">
+        <div *ngFor="let cell of row; let j = index"
+             (click)="handleCellClick(i, j)"
+             [ngClass]="cell.status">
+        </div>
+      </div>
+    </div>
+    <button (click)="restartGame()">Reiniciar Juego</button>
+  </div>

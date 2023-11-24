@@ -1,0 +1,23 @@
+.cell {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+    margin: 1px;
+  }
+  
+  .empty {
+    background-color: lightblue;
+  }
+  
+  .ship {
+    background-color: blue;
+  }
+  
+  .hit {
+    background-color: red;
+  }
+  
+  .miss {
+    background-color: grey;
+  }
+  
