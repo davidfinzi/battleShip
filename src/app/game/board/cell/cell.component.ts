@@ -1,9 +1,12 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cell',
   templateUrl: './cell.component.html',
-  styleUrls: ['./cell.component.css']
+  standalone: true,
+  imports: [CommonModule]
+
 })
 export class CellComponent {
   @Input() status: string = 'empty';
@@ -12,7 +15,7 @@ export class CellComponent {
 
   onClick() {
     if (this.status === 'empty') {
-      this.status = 'occupied'; 
+      this.status = 'ship'; 
     }
   }
 }

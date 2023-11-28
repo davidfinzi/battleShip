@@ -1,45 +1,29 @@
-import { Component } from '@angular/core';
-import { GameService } from '../services/game.services';
+import { Component, isStandalone } from '@angular/core';
+
+export enum CellStatus {
+  Empty = 'empty',
+  Ship = 'ship',
+  Hit = 'hit',
+  Miss = 'miss',
+}
 
 @Component({
-  selector: 'app-game',
+  selector: 'app-root',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  styleUrls: ['./game.component.sass']
 })
+
 export class GameComponent {
+  totalCells = 100;
+  cellsOccupied = 0;
   rows: number = 10;
   cols: number = 10;
   board: any[][] = [];
   gameStarted: boolean = false;
   gameOver: boolean = false;
   shipsPlaced: number = 0;
-  totalShips: number = 10;
-
-  constructor(private gameService: GameService) {
-    this.initializeBoard();
-    this.placeShips();
-  }
-
-  initializeBoard() {
-    for (let i = 0; i < this.rows; i++) {
-      this.board[i] = [];
-      for (let j = 0; j < this.cols; j++) {
-        this.board[i][j] = { status: 'empty' };
-      }
-    }
-  }
-
-  placeShips() {
-    while (this.shipsPlaced < this.totalShips) {
-      const row = Math.floor(Math.random() * this.rows);
-      const col = Math.floor(Math.random() * this.cols);
-
-      if (this.board[row][col].status === 'empty') {
-        this.board[row][col].status = 'ship';
-        this.shipsPlaced++;
-      }
-    }
-  }
+  totalShips: number = 10;  
+  shootsLeft = 80; 
 
   handleCellClick(row: number, col: number) {
     if (!this.gameStarted) {
@@ -49,11 +33,13 @@ export class GameComponent {
     if (!this.gameOver) {
       const clickedCell = this.board[row][col];
 
-      if (clickedCell.status === 'ship') {
-        clickedCell.status = 'hit';
+      if (clickedCell.status === CellStatus.Ship) {
+        clickedCell.status = CellStatus.Hit;
         this.checkGameOver();
-      } else if (clickedCell.status === 'empty') {
-        clickedCell.status = 'miss';
+      } else if (clickedCell.status === CellStatus.Empty) {
+        clickedCell.status = CellStatus.Miss;
+        this.shootsLeft--; 
+        this.checkGameEnd();
       }
     }
   }
@@ -62,7 +48,7 @@ export class GameComponent {
     let shipsRemaining = 0;
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
-        if (this.board[i][j].status === 'ship') {
+        if (this.board[i][j].status === CellStatus.Ship) {
           shipsRemaining++;
         }
       }
@@ -73,11 +59,9 @@ export class GameComponent {
     }
   }
 
-  restartGame() {
-    this.gameStarted = false;
-    this.gameOver = false;
-    this.shipsPlaced = 0;
-    this.initializeBoard();
-    this.placeShips();
+  checkGameEnd() {
+    if (this.shootsLeft === 0 && !this.gameOver) {
+      this.gameOver = true;
+    }
   }
 }

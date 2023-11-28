@@ -1,21 +1,22 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { BoardComponent } from './board/board.component';
-import { CellComponent } from './cell/cell.component';
+import { BrowserModule } from '@angular/platform-browser';
+
 import { GameComponent } from './game/game.component';
+import { CommonModule } from '@angular/common';
+import { BoardComponent } from './game/board/board.component';
 
 @NgModule({
   declarations: [
     GameComponent,
-    BoardComponent,
-    CellComponent
+    BoardComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpClientModule
+    CommonModule
+  ],
+  bootstrap: [
+    GameComponent
   ]
 })
+
 export class AppModule { }
